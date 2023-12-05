@@ -5,6 +5,7 @@ import {
   PutCommand,
   UpdateCommandInput,
 } from "@aws-sdk/lib-dynamodb";
+import { postSchema } from "~/schemas/schemas";
 
 const tableName = "simple-bbs";
 // DynamoDBクライアントの設定
@@ -31,7 +32,7 @@ async function updateSeq() {
 export default defineEventHandler(async (e) => {
   try {
     // Postされたデータを読み取る
-    const body = await readBody(e);
+    const body = await readValidatedBody(e, postSchema.parse);
 
     // タイムスタンプを取得
     const nowDate = new Date();
