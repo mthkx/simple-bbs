@@ -15,11 +15,4 @@ export default defineNuxtConfig({
       target: "esnext",
     },
   },
-  runtimeConfig: {
-    tableName: "simple-bbs",
-    awsEndpoint: "",
-    awsSecretAccessKey: "",
-    awsAccessKeyId: "",
-    awsDefaultRegion: "",
-  },
 });
