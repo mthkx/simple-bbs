@@ -1,16 +1,11 @@
 <script setup lang="ts">
+import { postSchema, type Post } from "@/schemas/schemas";
+
+type FetchedPost = Post & { id: number; createdAt: string };
 const route = useRoute();
-type Post = {
-  id: string;
-  name: string;
-  title: string;
-  message: string;
-  emoji: string;
-  createdAt: string;
-};
 
 // 投稿をフェッチする
-const { data: post } = await useFetch<Post>("/api/show", {
+const { data: post } = await useFetch<FetchedPost>("/api/show", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: route.params,
