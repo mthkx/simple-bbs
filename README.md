@@ -69,7 +69,7 @@ AWS_SECRET_ACCESS_KEY=dummy
 | 型               | 文字列         |
 
 次に`atomic-counter`テーブルに項目を追加します。  
-プライマリーキー"_tableName_"の値に"sample-bbs"と入力  
+プライマリーキー"_tableName_"の値に"simple-bbs"と入力  
 属性としてキー名を"_seq_"、数値型に設定し、値に 0 を入力してください
 
 | tableName  | seq |
