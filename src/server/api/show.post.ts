@@ -7,18 +7,22 @@ const dbClient = new DynamoDBClient();
 const documentClient = DynamoDBDocumentClient.from(dbClient);
 
 export default defineEventHandler(async (e) => {
-  // POSTされたデータを取得
-  const body = await readBody(e);
+  try {
+    // POSTされたデータを取得
+    const body = await readBody(e);
 
-  // クエリを送り、レスポンスを取得
-  const command = new QueryCommand({
-    TableName: tableName,
-    ExpressionAttributeValues: {
-      ":id": Number(body.id),
-    },
-    KeyConditionExpression: "id = :id",
-  });
-  const { Items } = await documentClient.send(command);
+    // クエリを送り、レスポンスを取得
+    const command = new QueryCommand({
+      TableName: tableName,
+      ExpressionAttributeValues: {
+        ":id": Number(body.id),
+      },
+      KeyConditionExpression: "id = :id",
+    });
+    const { Items } = await documentClient.send(command);
 
-  return Items?.[0];
+    return Items?.[0];
+  } catch (err) {
+    console.log(err);
+  }
 });

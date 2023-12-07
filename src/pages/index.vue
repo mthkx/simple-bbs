@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type { ZodError } from "zod";
-
 import { postSchema, type Post } from "@/schemas/schemas";
-
-type Posts = (Post & { id: number; createdAt: string })[];
 
 // フォームにバインドするオブジェクト
 const formData = ref({
@@ -17,23 +13,24 @@ const formData = ref({
 const result = ref("");
 
 // 全ての投稿の配列
-const posts = ref<Posts>();
+const posts = ref<Post[]>();
 
-const errorMsg = ref<ZodError | null>(null);
+const errorMsg =
+  ref<Partial<{ [K in keyof typeof formData.value]: string[] | undefined }>>();
 
 // APIと通信して投稿一覧を更新する関数
 async function fetchIndex() {
-  const { data: fetchedPosts } = await useFetch<Posts>("/api/postIndex", {
+  const { data: fetchedPosts } = await useFetch<Post[]>("/api/fetchIndex", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
   });
 
-  if (isRef<Posts>(fetchedPosts)) posts.value = fetchedPosts.value;
+  if (isRef<Post[]>(fetchedPosts)) posts.value = fetchedPosts.value;
 }
 
 // APIにフォームデータをポストする関数
 async function onSubmit() {
-  errorMsg.value = null;
+  errorMsg.value = undefined;
   // 空文字列をundefinedに変換
   if (formData.value.emoji === "") formData.value.emoji = undefined;
 
@@ -55,7 +52,8 @@ async function onSubmit() {
       result.value = "エラーが発生しました";
     }
   } else {
-    errorMsg.value = parsedData.error;
+    // 失敗した場合エラーを表示する
+    errorMsg.value = parsedData.error.flatten().fieldErrors;
   }
   // 5秒後にメッセージを消去
   setTimeout(() => {
@@ -83,8 +81,8 @@ await fetchIndex();
           type="text"
           class="form-control"
         />
-        <p v-if="errorMsg?.flatten().fieldErrors.name" class="text-danger">
-          {{ errorMsg.flatten().fieldErrors.name?.toString() }}
+        <p v-if="errorMsg?.name" class="text-danger">
+          {{ errorMsg.name.toString() }}
         </p>
       </div>
       <div class="mb-3">
@@ -99,8 +97,8 @@ await fetchIndex();
           type="text"
           class="form-control"
         />
-        <p v-if="errorMsg?.flatten().fieldErrors.title" class="text-danger">
-          {{ errorMsg.flatten().fieldErrors.title?.toString() }}
+        <p v-if="errorMsg?.title" class="text-danger">
+          {{ errorMsg.title.toString() }}
         </p>
       </div>
       <div class="mb-3">
@@ -114,8 +112,8 @@ await fetchIndex();
           v-model="formData.message"
           class="form-control"
         ></textarea>
-        <p v-if="errorMsg?.flatten().fieldErrors.message" class="text-danger">
-          {{ errorMsg.flatten().fieldErrors.message?.toString() }}
+        <p v-if="errorMsg?.message" class="text-danger">
+          {{ errorMsg.message.toString() }}
         </p>
       </div>
       <div class="mb-3">
@@ -126,8 +124,8 @@ await fetchIndex();
           type="text"
           class="form-control w-15"
         />
-        <p v-if="errorMsg?.flatten().fieldErrors.emoji" class="text-danger">
-          {{ errorMsg.flatten().fieldErrors.emoji?.toString() }}
+        <p v-if="errorMsg?.emoji" class="text-danger">
+          {{ errorMsg.emoji.toString() }}
         </p>
       </div>
       <button class="btn btn-primary" @click="onSubmit">Submit</button>
@@ -155,7 +153,3 @@ await fetchIndex();
     </table>
   </main>
 </template>
-
-<style>
-@import url(https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css);
-</style>

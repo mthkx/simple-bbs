@@ -15,12 +15,5 @@
     "parser": "@typescript-eslint/parser",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "vue"],
-  "rules": {
-    "@typescript-eslint/no-unused-vars": "off",
-    "vue/no-v-html": "off",
-    "vue/multi-word-component-names": "off",
-    "vue/no-multiple-template-root": "off",
-    "@typescript-eslint/no-explicit-any": "warn"
-  }
+  "plugins": ["@typescript-eslint", "vue"]
 }

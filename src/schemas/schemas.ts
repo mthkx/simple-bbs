@@ -26,4 +26,7 @@ export const postSchema = z.object({
     .optional(),
 });
 
-export type Post = z.infer<typeof postSchema>;
+export type Post = z.infer<typeof postSchema> & {
+  id: number;
+  createdAt: string;
+};

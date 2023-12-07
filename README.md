@@ -1,75 +1,97 @@
-# Nuxt 3 Minimal Starter
+# simple-bbs
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+バックエンドに AWS Lambda + DynamoDB を使用した掲示板のサンプルです。
 
-## Setup
+![sample](./sample.png)
 
-Make sure to install the dependencies:
+### 利用する技術
 
-```bash
-# npm
-npm install
+- AWS
+  - Lambda
+  - DynamoDB
+  - S3
+  - CloudFront
+- Nuxt 3
+- TypeScript
+- Bootstrap v5
+- Zod
+- AWS SDK for JavaScript v3
 
-# pnpm
-pnpm install
+## 1. git clone & パッケージのインストール
 
-# yarn
-yarn install
+このリポジトリを作業するフォルダにダウンロード、または `git clone` してください。
 
-# bun
-bun install
+```
+$ git clone https://github.com/mthkx/simple-bbs.git
 ```
 
-## Development Server
+必要なパッケージをインストールします。
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+```
+$ npm install
 ```
 
-## Production
+## 2.環境変数の設定
 
-Build the application for production:
+`.env.production.local` ファイルをルート直下に作成します。
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```
+AWS_ENDPOINT_URL_DYNAMODB=https://dynamodb.ap-northeast-1.amazonaws.com（東京リージョンの場合）
+AWS_ACCESS_KEY_ID=（IAMユーザーのアクセスキー）
+AWS_SECRET_ACCESS_KEY=（IAMユーザーのシークレットアクセスキー）
 ```
 
-Locally preview production build:
+ローカル環境で動作確認する場合は`.env.development.local`ファイルを作成して、使用する DynamoDB 互換データベースに応じた設定をしてください。
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+```
+# 例：LocalStackの場合
+AWS_ENDPOINT_URL_DYNAMODB=https://dynamodb.localhost.localstack.cloud:4566
+AWS_ACCESS_KEY_ID=dummy
+AWS_SECRET_ACCESS_KEY=dummy
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## 3.DynamoDB の設定
+
+以下の通りにテーブルを作成してください。
+
+| 項目             | 設定内容   |
+| ---------------- | ---------- |
+| テーブル名       | sample-bbs |
+| プライマリーキー | id         |
+| 型               | 数値       |
+
+続いて連番を採番するためのテーブルを作成します。
+
+| 項目             | 設定内容       |
+| ---------------- | -------------- |
+| テーブル名       | atomic-counter |
+| プライマリーキー | tableName      |
+| 型               | 文字列         |
+
+次に`atomic-counter`テーブルに項目を追加します。  
+プライマリーキー"_tableName_"の値に"sample-bbs"と入力  
+属性としてキー名を"_seq_"、数値型に設定し、値に 0 を入力してください
+
+| tableName  | seq |
+| ---------- | --- |
+| sample-bbs | 0   |
+
+このようにテーブルに反映されていれば完了です。
+
+## 4.（ローカル環境で動かす）
+
+以下のコマンドで動作確認ができます。
+
+```
+$ npm run dev
+```
+
+## 5.ビルド
+
+以下のコマンドを実行します。
+
+```
+$ npm run build
+```
+
+ルート直下の`.output`フォルダにビルドしたファイルが出力されます。

@@ -1,9 +1,9 @@
 {
-  "name": "nuxt-app",
+  "name": "simple-bbs",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt build  --dotenv .env.production.local",
     "dev": "nuxt dev --dotenv .env.development.local",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

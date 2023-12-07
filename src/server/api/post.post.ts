@@ -41,17 +41,20 @@ export default defineEventHandler(async (e) => {
     // IDを取得
     const nextSeq = await updateSeq();
 
+    const item = {
+      id: nextSeq,
+      name: body.name,
+      title: body.title,
+      message: body.message,
+      emoji: body.emoji,
+      createdAt,
+    };
+    if (!item.emoji) delete item.emoji;
+
     // アイテムのコマンドを設定して挿入
     const param = {
       TableName: tableName,
-      Item: {
-        id: nextSeq,
-        name: body.name,
-        title: body.title,
-        message: body.message,
-        emoji: body.emoji,
-        createdAt,
-      },
+      Item: item,
     };
     await documentClient.send(new PutCommand(param));
 
