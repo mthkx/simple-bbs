@@ -56,7 +56,7 @@ AWS_SECRET_ACCESS_KEY=dummy
 
 | 項目             | 設定内容   |
 | ---------------- | ---------- |
-| テーブル名       | sample-bbs |
+| テーブル名       | simple-bbs |
 | プライマリーキー | id         |
 | 型               | 数値       |
 
@@ -74,7 +74,7 @@ AWS_SECRET_ACCESS_KEY=dummy
 
 | tableName  | seq |
 | ---------- | --- |
-| sample-bbs | 0   |
+| simple-bbs | 0   |
 
 このようにテーブルに反映されていれば完了です。
 
