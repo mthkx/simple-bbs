@@ -33,21 +33,21 @@ $ npm install
 
 ## 2.環境変数の設定
 
-`.env.production.local` ファイルをルート直下に作成します。
+`.env.production` ファイルをルート直下に作成します。
 
 ```
-AWS_ENDPOINT_URL_DYNAMODB=https://dynamodb.ap-northeast-1.amazonaws.com（東京リージョンの場合）
-AWS_ACCESS_KEY_ID=（IAMユーザーのアクセスキー）
-AWS_SECRET_ACCESS_KEY=（IAMユーザーのシークレットアクセスキー）
+NUXT_AWS_ENDPOINT_URL_DYNAMODB=https://dynamodb.ap-northeast-1.amazonaws.com（東京リージョンの場合）
+NUXT_AWS_ACCESS_KEY_ID=（IAMユーザーのアクセスキー）
+NUXT_AWS_SECRET_ACCESS_KEY=（IAMユーザーのシークレットアクセスキー）
 ```
 
-ローカル環境で動作確認する場合は`.env.development.local`ファイルを作成して、使用する DynamoDB 互換データベースに応じた設定をしてください。
+ローカル環境で動作確認する場合は`.env.development`ファイルを作成して、使用する DynamoDB 互換データベースに応じた設定をしてください。
 
 ```
 # 例：LocalStackの場合
-AWS_ENDPOINT_URL_DYNAMODB=https://dynamodb.localhost.localstack.cloud:4566
-AWS_ACCESS_KEY_ID=dummy
-AWS_SECRET_ACCESS_KEY=dummy
+NUXT_AWS_ENDPOINT_URL_DYNAMODB=https://dynamodb.localhost.localstack.cloud:4566
+NUXT_AWS_ACCESS_KEY_ID=dummy
+NUXT_AWS_SECRET_ACCESS_KEY=dummy
 ```
 
 ## 3.DynamoDB の設定
