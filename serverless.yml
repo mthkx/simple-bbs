@@ -1,0 +1,28 @@
+service: simple-bbs
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-northeast-1
+package:
+  patterns:
+    - "!**"
+    - ".output/server/**" # nuxt run buildの出力ディレクトリのサーバーサイドのみを指定
+functions:
+  nuxt-handler:
+    handler: .output/server/index.handler
+    environment:
+      NUXT_AWS_ENDPOINT_URL_DYNAMODB: ${env:NUXT_AWS_ENDPOINT_URL_DYNAMODB}
+      NUXT_AWS_SECRET_ACCESS_KEY: ${env:NUXT_AWS_SECRET_ACCESS_KEY}
+      NUXT_AWS_ACCESS_KEY_ID: ${env:NUXT_AWS_ACCESS_KEY_ID}
+    timeout: 30
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true

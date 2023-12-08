@@ -15,4 +15,9 @@ export default defineNuxtConfig({
       ],
     },
   },
+  runtimeConfig: {
+    awsEndpointUrlDynamodb: "",
+    awsSecretAccessKey: "",
+    awsAccessKeyId: "",
+  },
 });

@@ -1,7 +1,15 @@
 import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb";
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
 
-const dbClient = new DynamoDBClient();
+const runtimeConfig = useRuntimeConfig();
+
+const dbClient = new DynamoDBClient({
+  endpoint: runtimeConfig.awsEndpointUrlDynamodb,
+  credentials: {
+    accessKeyId: runtimeConfig.awsAccessKeyId,
+    secretAccessKey: runtimeConfig.awsSecretAccessKey,
+  },
+});
 
 export default defineEventHandler(async () => {
   try {

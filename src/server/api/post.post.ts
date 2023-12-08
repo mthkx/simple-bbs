@@ -8,8 +8,17 @@ import {
 import { postSchema } from "~/schemas/schemas";
 
 const tableName = "simple-bbs";
+const runtimeConfig = useRuntimeConfig();
+
+
 // DynamoDBクライアントの設定
-const dbClient = new DynamoDBClient();
+const dbClient = new DynamoDBClient({
+  endpoint: runtimeConfig.awsEndpointUrlDynamodb,
+  credentials: {
+    accessKeyId: runtimeConfig.awsAccessKeyId,
+    secretAccessKey: runtimeConfig.awsSecretAccessKey,
+  },
+});
 const documentClient = DynamoDBDocumentClient.from(dbClient);
 
 // カウンタの数値を+1して新しい数値を取得する
